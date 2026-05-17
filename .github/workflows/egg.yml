@@ -1,5 +1,8 @@
 on: [push]
 name: Egg
+permissions:
+  contents: write
+
 jobs:
   build:
     name: npm-build工作
@@ -8,8 +11,12 @@ jobs:
       - name: 读取仓库内容
         uses: actions/checkout@v4
       
-      - name: 安装依赖
+      - name: 安装依赖 & 构建项目
         run: npm install
+        run: npm run build      
       
-      - name: 构建项目
-        run: npm run build
+      - name: 部署
+        uses: JamesMGreene/gh-pages-deploy@v1.0.0
+        with:
+          branch: gh-pages
+          folder: dist
